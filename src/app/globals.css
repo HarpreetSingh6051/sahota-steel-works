@@ -1,26 +1,83 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-barlow), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: var(--font-barlow-condensed), "Arial Narrow", Arial, sans-serif;
+
+  /* Charcoal / graphite / steel greys */
+  --color-ink-50: #f6f7f9;
+  --color-ink-100: #eceef2;
+  --color-ink-200: #d9dde4;
+  --color-ink-300: #bac2cd;
+  --color-ink-400: #939fae;
+  --color-ink-500: #6f7c8d;
+  --color-ink-600: #55606f;
+  --color-ink-700: #414b58;
+  --color-ink-800: #2b333d;
+  --color-ink-900: #1a2129;
+  --color-ink-950: #0d1116;
+
+  /* Deep industrial navy */
+  --color-navy-600: #28476f;
+  --color-navy-700: #1e3760;
+  --color-navy-800: #16294a;
+  --color-navy-900: #101d36;
+  --color-navy-950: #0b1526;
+
+  /* Industrial steel blue-grey */
+  --color-steel-300: #b9c6d4;
+  --color-steel-400: #93a4b6;
+  --color-steel-500: #6c8095;
+
+  /* Industrial orange / amber — used sparingly for CTAs and highlights */
+  --color-accent-300: #f6a25c;
+  --color-accent-400: #f08337;
+  --color-accent-500: #e8661b;
+  --color-accent-600: #cf550e;
+  --color-accent-700: #ad4508;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-ink-50);
+    color: var(--color-ink-900);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Keep anchored headings clear of the sticky header */
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-500);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-500);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  .container-site {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent-500;
+  }
+
+  .eyebrow-line {
+    @apply h-px w-8 bg-accent-500;
+  }
 }
