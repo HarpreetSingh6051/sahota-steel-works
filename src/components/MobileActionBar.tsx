@@ -10,7 +10,7 @@ import { quoteWhatsAppLink } from "@/lib/contact";
 export default function MobileActionBar() {
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-ink-950 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.7)] lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-accent-400/25 bg-ink-950 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.7)] lg:hidden"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <div className="grid grid-cols-3 divide-x divide-white/10">

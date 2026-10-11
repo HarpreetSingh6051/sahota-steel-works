@@ -5,37 +5,38 @@
     "Segoe UI", Roboto, Arial, sans-serif;
   --font-display: var(--font-barlow-condensed), "Arial Narrow", Arial, sans-serif;
 
-  /* Charcoal / graphite / steel greys */
-  --color-ink-50: #f6f7f9;
-  --color-ink-100: #eceef2;
-  --color-ink-200: #d9dde4;
-  --color-ink-300: #bac2cd;
-  --color-ink-400: #939fae;
-  --color-ink-500: #6f7c8d;
-  --color-ink-600: #55606f;
-  --color-ink-700: #414b58;
-  --color-ink-800: #2b333d;
-  --color-ink-900: #1a2129;
-  --color-ink-950: #0d1116;
+  /* Deep charcoal scale — ink-50 is the off-white text colour,
+     ink-300 the steel grey, ink-950 the deep charcoal background */
+  --color-ink-50: #f5f5f5; /* off-white — main text */
+  --color-ink-100: #e8e8e8;
+  --color-ink-200: #dcdcdc;
+  --color-ink-300: #b8b8b8; /* steel grey — secondary text */
+  --color-ink-400: #8a8a8a;
+  --color-ink-500: #808080;
+  --color-ink-600: #4d4d4d;
+  --color-ink-700: #3a3a3a; /* subtle borders */
+  --color-ink-800: #2e2e2e;
+  --color-ink-900: #242424; /* dark graphite — secondary background */
+  --color-ink-950: #171717; /* deep charcoal — primary background */
 
-  /* Deep industrial navy */
-  --color-navy-600: #28476f;
-  --color-navy-700: #1e3760;
-  --color-navy-800: #16294a;
-  --color-navy-900: #101d36;
-  --color-navy-950: #0b1526;
+  /* Graphite scale (legacy aliases) — neutral, no blue */
+  --color-navy-600: #3a3a3a;
+  --color-navy-700: #2e2e2e;
+  --color-navy-800: #242424;
+  --color-navy-900: #1e1e1e;
+  --color-navy-950: #171717;
 
-  /* Industrial steel blue-grey */
-  --color-steel-300: #b9c6d4;
-  --color-steel-400: #93a4b6;
-  --color-steel-500: #6c8095;
+  /* Industrial orange — primary action, active navigation, highlights */
+  --color-accent-300: #ffb37a; /* light orange — text on dark */
+  --color-accent-400: #ff7a2f; /* hover accent */
+  --color-accent-500: #e8661b; /* primary accent */
+  --color-accent-600: #c7500f;
+  --color-accent-700: #a33e0c;
 
-  /* Industrial orange / amber — used sparingly for CTAs and highlights */
-  --color-accent-300: #f6a25c;
-  --color-accent-400: #f08337;
-  --color-accent-500: #e8661b;
-  --color-accent-600: #cf550e;
-  --color-accent-700: #ad4508;
+  /* Warm welding sparks — restricted to the welding / metal-cut animation */
+  --color-weld-300: #fff0c2;
+  --color-weld-400: #ffd98a;
+  --color-weld-500: #ffb547;
 }
 
 @layer base {
@@ -45,8 +46,8 @@
 
   body {
     font-family: var(--font-sans);
-    background-color: var(--color-ink-50);
-    color: var(--color-ink-900);
+    background-color: var(--color-ink-950);
+    color: var(--color-ink-50);
     overflow-x: clip;
     -webkit-font-smoothing: antialiased;
   }
@@ -58,13 +59,14 @@
 
   ::selection {
     background-color: var(--color-accent-500);
-    color: #fff;
+    color: var(--color-ink-950);
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-accent-500);
+    outline: 2px solid var(--color-accent-400);
     outline-offset: 2px;
     border-radius: 2px;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-ink-950) 70%, transparent);
   }
 }
 
@@ -73,11 +75,473 @@
     @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
   }
 
+  /* Eyebrow labels — deep orange on light, light orange via .eyebrow-light on dark */
   .eyebrow {
-    @apply inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-accent-500;
+    @apply inline-flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.22em];
+    color: var(--color-accent-700);
+  }
+
+  .eyebrow-light {
+    color: var(--color-accent-300);
   }
 
   .eyebrow-line {
-    @apply h-px w-8 bg-accent-500;
+    @apply h-px w-8;
+    background-color: var(--color-accent-700);
+  }
+
+  .eyebrow-light .eyebrow-line {
+    background-color: var(--color-accent-400);
+  }
+
+  /* Logo — brief metallic sheen sweep, played once */
+  .logo-sheen {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 45%;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgba(244, 246, 248, 0.55),
+      transparent
+    );
+    mix-blend-mode: screen;
+    opacity: 0;
+    transform: translate3d(-160%, 0, 0);
+    animation: logo-sheen 1.15s cubic-bezier(0.4, 0, 0.2, 1) 0.9s forwards;
+  }
+
+  /* Welding effect — a restrained focal glow on the hero */
+  .weld-glow {
+    position: absolute;
+    left: 72%;
+    top: 58%;
+    width: min(46vmin, 420px);
+    aspect-ratio: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-weld-500) 32%, transparent) 0%,
+      color-mix(in srgb, var(--color-accent-500) 14%, transparent) 38%,
+      transparent 68%
+    );
+    filter: blur(3px);
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1);
+    animation: weld-glow 3.4s ease-in-out infinite;
+  }
+
+  /* A faint metallic highlight travelling across the hero (divider) */
+  .hero-sheen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 78%;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .hero-sheen::after {
+    content: "";
+    position: absolute;
+    left: -60%;
+    top: 0;
+    width: 55%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(199, 208, 217, 0.85),
+      transparent
+    );
+    transform: translate3d(-120%, 0, 0);
+    opacity: 0;
+    animation: sheen-sweep 7.5s ease-in-out 2.4s infinite;
+  }
+
+  /* Metal-cutting divider — one luminous sweep + a few sparks, played once */
+  .metalcut-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-weld-300) 60%, white) 42%,
+      #ffffff 50%,
+      color-mix(in srgb, var(--color-weld-300) 60%, white) 58%,
+      transparent
+    );
+    opacity: 0;
+    transform: scaleX(0.05);
+    transform-origin: center;
+  }
+
+  .metalcut-wrap.is-played .metalcut-line {
+    animation: metalcut-line 1.25s cubic-bezier(0.6, 0.05, 0.3, 1) 0.12s
+      forwards;
+  }
+
+  .metalcut-spark {
+    position: absolute;
+    top: 0;
+    width: 3px;
+    height: 3px;
+    border-radius: 9999px;
+    background: var(--color-weld-400);
+    opacity: 0;
+  }
+
+  .metalcut-wrap.is-played .metalcut-spark {
+    animation: metalcut-spark 0.85s ease-out forwards;
+  }
+
+  .metalcut-wrap.is-played .mc-s1 {
+    left: 14%;
+    --dx: 16px;
+    animation-delay: 0.18s;
+  }
+
+  .metalcut-wrap.is-played .mc-s2 {
+    left: 46%;
+    --dx: -12px;
+    animation-delay: 0.34s;
+  }
+
+  .metalcut-wrap.is-played .mc-s3 {
+    left: 74%;
+    --dx: 18px;
+    animation-delay: 0.5s;
+  }
+
+  /* Industrial backdrop textures ---------------------------------------- */
+
+  /* Faint drafting grid — dark surface */
+  .drafting-dark {
+    background-image:
+      linear-gradient(to right, rgba(199, 208, 217, 0.09) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(199, 208, 217, 0.09) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Faint drafting grid — light surface */
+  .drafting-light {
+    background-image:
+      linear-gradient(to right, rgba(23, 23, 23, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(23, 23, 23, 0.06) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  /* Brushed-metal hairline texture */
+  .brushed-dark {
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(199, 208, 217, 0.04) 0,
+      rgba(199, 208, 217, 0.04) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  .brushed-light {
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgba(23, 23, 23, 0.03) 0,
+      rgba(23, 23, 23, 0.03) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  /* Slow metallic reflection travelling across a section edge */
+  .divider-sheen {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .divider-sheen::after {
+    content: "";
+    position: absolute;
+    left: -60%;
+    top: 0;
+    width: 55%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(199, 208, 217, 0.7),
+      transparent
+    );
+    transform: translate3d(-120%, 0, 0);
+    opacity: 0;
+    animation: sheen-sweep 9s ease-in-out 1.2s infinite;
+  }
+
+  /* Restrained metallic shine on product imagery — sweeps once on hover */
+  .product-shine {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .product-shine::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 40%;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      rgba(244, 246, 248, 0.26),
+      transparent
+    );
+    mix-blend-mode: screen;
+    transform: translate3d(-180%, 0, 0);
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .group:hover .product-shine::after {
+    transform: translate3d(340%, 0, 0);
+  }
+}
+
+@layer utilities {
+  /* Hero entrance — short fade + upward movement, staggered by modifier */
+  .anim-fade-up {
+    animation: hero-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .anim-fade-up-1 {
+    animation: hero-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+  }
+
+  .anim-fade-up-2 {
+    animation: hero-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.24s both;
+  }
+
+  .anim-fade-up-3 {
+    animation: hero-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.38s both;
+  }
+
+  .anim-fade-up-4 {
+    animation: hero-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.52s both;
+  }
+
+  .anim-lightbox-in {
+    animation: lightbox-in 0.24s ease-out both;
+  }
+
+  .anim-lightbox-out {
+    animation: lightbox-out 0.16s ease-in both;
+  }
+
+  /* Ambient workshop lighting — slow drifting glows */
+  .anim-orb-drift {
+    animation: orb-drift 22s ease-in-out infinite;
+  }
+
+  .anim-orb-drift-2 {
+    animation: orb-drift-2 26s ease-in-out infinite;
+  }
+}
+
+/* Scroll-reveal system — .reveal (single element) and .reveal-stagger (children).
+   Only hidden once JS is present (html.js), so content is never lost. */
+html.js .reveal,
+html.js .reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.55s ease,
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.js .reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+html.js .reveal-stagger > * {
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+html.js .reveal-stagger.is-in > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes hero-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes weld-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.92;
+    transform: translate(-50%, -50%) scale(1.09);
+  }
+}
+
+@keyframes sheen-sweep {
+  0% {
+    transform: translate3d(-120%, 0, 0);
+    opacity: 0;
+  }
+  14% {
+    opacity: 0.55;
+  }
+  32% {
+    opacity: 0.08;
+  }
+  100% {
+    transform: translate3d(420%, 0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes logo-sheen {
+  0% {
+    transform: translate3d(-160%, 0, 0);
+    opacity: 0;
+  }
+  24% {
+    opacity: 0.75;
+  }
+  70% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate3d(480%, 0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes metalcut-line {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.05);
+  }
+  10% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes metalcut-spark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5);
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx, 14px), -14px) scale(0.25);
+  }
+}
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes lightbox-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+}
+
+@keyframes orb-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(4%, 6%, 0);
+  }
+}
+
+@keyframes orb-drift-2 {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-5%, -4%, 0);
+  }
+}
+
+/* Respect reduced-motion everywhere — entrance animations resolve instantly
+   to their visible end-state, reveal elements display content directly. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html.js .reveal,
+  html.js .reveal-stagger > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .metalcut-line,
+  .metalcut-spark {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .weld-canvas {
+    display: none;
   }
 }

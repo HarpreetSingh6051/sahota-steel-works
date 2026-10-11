@@ -31,22 +31,22 @@ export const business = {
 
   contacts: [
     {
-      name: "Rajinder Singh",
-      phoneDisplay: "09814472014",
-      phoneAction: "tel:+919814472014",
+      name: "Navjot Singh",
+      phoneDisplay: "9855285484",
+      phoneAction: "tel:+919855285484",
     },
     {
-      name: "Navjot Singh",
-      phoneDisplay: "9855285483",
-      phoneAction: "tel:+919855285483",
+      name: "Rajinder Singh",
+      phoneDisplay: "9814472014",
+      phoneAction: "tel:+919814472014",
     },
   ] satisfies BusinessContact[],
 
-  /** Primary WhatsApp target (Rajinder Singh's number, per business listing). */
-  whatsappNumber: "919814472014",
+  /** Primary WhatsApp target (Navjot Singh's number). */
+  whatsappNumber: "919855285484",
 
   /** Base WhatsApp deep link — build prefilled messages with waLink(). */
-  whatsappBaseUrl: "https://wa.me/919814472014",
+  whatsappBaseUrl: "https://wa.me/919855285484",
 
   /** Exact Google Maps directions URL supplied by the business. */
   mapsDirectionsUrl:
@@ -59,10 +59,6 @@ export const business = {
   /** Reliable search link fallback for the same destination. */
   mapsSearchUrl:
     "https://www.google.com/maps/search/?api=1&query=Sahota%20Steel%20Works%2C%20Near%20Khanna%20Dyeing%2C%20Tajpur%20Road%2C%20Ludhiana%2C%20Punjab",
-
-  /** Public Justdial business listing. */
-  justdialUrl:
-    "https://www.justdial.com/Ludhiana/Sahota-Steel-Works-Near-Khanna-Dyeing-Tajpur-Road/0161PX161-X161-190609092621-L3M3_BZDET",
 
   /**
    * Verified email — keep null until a real address is confirmed.

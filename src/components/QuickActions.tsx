@@ -1,4 +1,4 @@
-import { ExternalLink, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Mail, MapPin, MessageCircle, Phone } from "lucide-react";
 import { business } from "@/data/business";
 import { genericWhatsAppLink } from "@/lib/contact";
 
@@ -40,14 +40,6 @@ export default function QuickActions() {
       href: business.mapsDirectionsUrl,
       external: true,
     },
-    {
-      id: "justdial",
-      label: "View Justdial Listing",
-      value: "Business profile",
-      icon: ExternalLink,
-      href: business.justdialUrl,
-      external: true,
-    },
   ];
 
   const emailAction: ActionDef | null = business.email
@@ -61,24 +53,27 @@ export default function QuickActions() {
     : null;
 
   return (
-    <section aria-label="Quick contact actions" className="relative z-10 border-b border-ink-200 bg-white">
-      <div className="container-site grid grid-cols-2 gap-px bg-ink-200 lg:grid-cols-5">
+    <section
+      aria-label="Quick contact actions"
+      className="relative z-10 border-b border-white/10 bg-ink-950"
+    >
+      <div className="container-site grid grid-cols-2 gap-px bg-white/10 lg:grid-cols-5">
         {(emailAction ? [...actions, emailAction] : actions).map((action) => (
           <a
             key={action.id}
             href={action.href}
             target={action.external ? "_blank" : undefined}
             rel={action.external ? "noopener noreferrer" : undefined}
-            className="group flex min-h-24 items-center gap-3 bg-white px-4 py-5 transition-colors hover:bg-ink-50"
+            className="group flex min-h-24 items-center gap-3 bg-ink-950 px-4 py-5 transition-colors hover:bg-ink-900"
           >
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-ink-200 text-ink-600 transition-colors group-hover:border-accent-500 group-hover:bg-accent-500 group-hover:text-white">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-white/15 text-accent-300 transition-colors group-hover:border-accent-500 group-hover:bg-accent-500 group-hover:text-ink-950">
               <action.icon className="h-5 w-5" aria-hidden="true" />
             </span>
             <span className="min-w-0 leading-tight">
-              <span className="block truncate text-sm font-bold uppercase tracking-wide text-ink-950">
+              <span className="block truncate text-sm font-bold uppercase tracking-wide text-white">
                 {action.label}
               </span>
-              <span className="block truncate text-xs text-ink-500">{action.value}</span>
+              <span className="block truncate text-xs text-ink-400">{action.value}</span>
             </span>
           </a>
         ))}

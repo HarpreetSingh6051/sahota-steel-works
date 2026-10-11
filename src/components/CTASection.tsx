@@ -1,7 +1,8 @@
-import { MessageCircle, Navigation, Phone } from "lucide-react";
+import { ArrowRight, MessageCircle, Navigation, Phone } from "lucide-react";
 import { business } from "@/data/business";
 import { genericWhatsAppLink } from "@/lib/contact";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import Reveal from "@/components/Reveal";
 
 export default function CTASection() {
   return (
@@ -25,8 +26,8 @@ export default function CTASection() {
         <div className="absolute inset-0 bg-gradient-to-r from-navy-950/70 via-transparent to-ink-950/70" aria-hidden="true" />
       </div>
 
-      <div className="container-site text-center">
-        <p className="eyebrow justify-center">
+      <Reveal className="container-site text-center">
+        <p className="eyebrow eyebrow-light justify-center">
           <span className="eyebrow-line" aria-hidden="true" />
           Let&apos;s Talk Steel
           <span className="eyebrow-line" aria-hidden="true" />
@@ -47,10 +48,14 @@ export default function CTASection() {
         <div className="mx-auto mt-10 flex max-w-3xl flex-col justify-center gap-3 sm:flex-row">
           <a
             href={business.contacts[0].phoneAction}
-            className="inline-flex h-12 items-center justify-center gap-2 bg-accent-500 px-8 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-accent-600"
+            className="group inline-flex h-12 items-center justify-center gap-2 bg-accent-500 px-8 text-sm font-semibold uppercase tracking-wide text-ink-950 transition-colors hover:bg-accent-400"
           >
             <Phone className="h-4 w-4" aria-hidden="true" />
             Call Now
+            <ArrowRight
+              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
           </a>
           <a
             href={genericWhatsAppLink}
@@ -65,7 +70,7 @@ export default function CTASection() {
             href={business.mapsDirectionsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex h-12 items-center justify-center gap-2 border border-white/30 px-8 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:border-accent-500 hover:text-accent-400"
+            className="inline-flex h-12 items-center justify-center gap-2 border border-white/30 px-8 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:border-accent-300 hover:text-accent-300"
           >
             <Navigation className="h-4 w-4" aria-hidden="true" />
             Get Directions
@@ -74,15 +79,15 @@ export default function CTASection() {
 
         <p className="mt-8 text-sm text-ink-400">
           Call {business.contacts[0].name} at{" "}
-          <a href={business.contacts[0].phoneAction} className="font-semibold text-accent-400 hover:underline">
+          <a href={business.contacts[0].phoneAction} className="font-semibold text-accent-300 hover:underline">
             {business.contacts[0].phoneDisplay}
           </a>{" "}
           or {business.contacts[1].name} at{" "}
-          <a href={business.contacts[1].phoneAction} className="font-semibold text-accent-400 hover:underline">
+          <a href={business.contacts[1].phoneAction} className="font-semibold text-accent-300 hover:underline">
             {business.contacts[1].phoneDisplay}
           </a>
         </p>
-      </div>
+      </Reveal>
     </section>
   );
 }

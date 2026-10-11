@@ -1,20 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 /**
  * Clientside current year so the copyright stays accurate without a redeploy.
  *
- * `new Date()` cannot run during prerendering (Next blocks time reads in the
- * render path), so the year is computed in an effect after hydration. The
- * initial render falls back to the build year to avoid an empty gap.
+ * `new Date()` must not run during prerendering (Next blocks time reads in the
+ * render path), so the live year is read through `useSyncExternalStore`: the
+ * server/prerender snapshot uses the build year, and the browser then reads
+ * the real year after hydration.
  */
-export default function CopyrightYear() {
-  const [year, setYear] = useState<number>(2026);
+const emptySubscribe = () => () => {};
 
-  useEffect(() => {
-    setYear(new Date().getFullYear());
-  }, []);
+/** Build-time fallback used for the prerendered snapshot. */
+const BUILD_YEAR = 2026;
+
+export default function CopyrightYear() {
+  const year = useSyncExternalStore(
+    emptySubscribe,
+    () => new Date().getFullYear(),
+    () => BUILD_YEAR,
+  );
 
   return <span>{year}</span>;
 }

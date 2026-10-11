@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import {
   Building2,
   Flame,
@@ -10,6 +11,8 @@ import { services, serviceEnquiryMessage } from "@/data/services";
 import type { Service } from "@/data/services";
 import { waLink } from "@/lib/contact";
 import SectionHeading from "@/components/SectionHeading";
+import Reveal from "@/components/Reveal";
+import MetalCut from "@/components/MetalCut";
 
 const iconMap: Record<Service["icon"], LucideIcon> = {
   truck: Truck,
@@ -21,7 +24,8 @@ const iconMap: Record<Service["icon"], LucideIcon> = {
 
 export default function Services() {
   return (
-    <section id="services" className="bg-ink-950 py-20 text-white sm:py-28">
+    <section id="services" className="relative bg-ink-950 py-20 text-white sm:py-28">
+      <MetalCut />
       <div className="container-site">
         <SectionHeading
           eyebrow="What We Do"
@@ -30,15 +34,19 @@ export default function Services() {
           dark
         />
 
-        <div className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service) => {
+        <Reveal
+          className="mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          stagger
+        >
+          {services.map((service, index) => {
             const Icon = iconMap[service.icon];
             return (
               <article
                 key={service.id}
+                style={{ "--reveal-delay": `${index * 70}ms` } as CSSProperties}
                 className="group flex flex-col border border-white/10 bg-white/[0.03] p-6 transition-colors hover:border-accent-500/60 hover:bg-white/[0.06]"
               >
-                <span className="flex h-12 w-12 items-center justify-center border border-accent-500/40 text-accent-500 transition-colors group-hover:bg-accent-500 group-hover:text-white">
+                <span className="flex h-12 w-12 items-center justify-center border border-accent-500/40 text-accent-400 transition-colors group-hover:bg-accent-500 group-hover:text-ink-950">
                   <Icon className="h-6 w-6" aria-hidden="true" />
                 </span>
                 <h3 className="mt-5 font-display text-2xl font-bold uppercase tracking-tight">
@@ -60,7 +68,10 @@ export default function Services() {
           })}
 
           {/* Call-out card keeps the grid balanced */}
-          <article className="flex flex-col justify-center border border-accent-500/50 bg-navy-900 p-6">
+          <article
+            style={{ "--reveal-delay": `${services.length * 70}ms` } as CSSProperties}
+            className="flex flex-col justify-center border border-accent-500/50 bg-navy-900 p-6"
+          >
             <h3 className="font-display text-2xl font-bold uppercase leading-tight tracking-tight">
               Not sure where to start?
             </h3>
@@ -75,13 +86,13 @@ export default function Services() {
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex h-11 items-center justify-center bg-accent-500 px-5 text-sm font-semibold uppercase tracking-wide text-white transition-colors hover:bg-accent-600"
+                className="inline-flex h-11 items-center justify-center bg-accent-500 px-5 text-sm font-semibold uppercase tracking-wide text-ink-950 transition-colors hover:bg-accent-400"
               >
                 Discuss on WhatsApp
               </a>
             </div>
           </article>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

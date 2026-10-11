@@ -18,18 +18,32 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 /**
- * NOTE — business.siteUrl is a placeholder used to resolve absolute metadata
- * URLs (Open Graph, JSON-LD). Replace it with the real production domain
- * after the first deployment (see README).
+ * NOTE — business.siteUrl is the production domain that resolves every
+ * absolute metadata URL (Open Graph, Twitter, JSON-LD). It is read from
+ * src/data/business.ts; update it there once the final domain is live.
  */
+
+/** Exact page title + meta description reused across search and social cards. */
+const siteTitle = "Sahota Steel Works | Steel Supply & Fabrication";
+const siteDescription =
+  "Steel supply and fabrication services in Ludhiana, Punjab. Contact Sahota Steel Works for your project requirements.";
+
+/**
+ * Branded Open Graph / Twitter share image (1200 x 630) — a static asset in
+ * public/, referenced with an absolute HTTPS URL so social crawlers can fetch
+ * it without authentication.
+ */
+const socialImageUrl = `${business.siteUrl}/images/og-cover.jpg`;
+const socialImageAlt =
+  "Sahota Steel Works — steel supply and fabrication services in Ludhiana, Punjab, India";
+
 export const metadata: Metadata = {
   metadataBase: new URL(business.siteUrl),
   title: {
-    default:
-      "Sahota Steel Works | Steel Supply & Fabrication in Ludhiana, Punjab",
+    default: siteTitle,
     template: "%s | Sahota Steel Works",
   },
-  description: business.summary,
+  description: siteDescription,
   applicationName: business.name,
   keywords: [
     "steel supplier Ludhiana",
@@ -42,26 +56,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "/",
+    url: `${business.siteUrl}/`,
     siteName: business.name,
-    title:
-      "Sahota Steel Works | Steel Supply & Fabrication in Ludhiana, Punjab",
-    description: business.summary,
+    title: siteTitle,
+    description: siteDescription,
     images: [
       {
-        url: "/images/hero.jpg",
-        width: 1920,
-        height: 1080,
-        alt: "Structural steel building frame under construction",
+        url: socialImageUrl,
+        width: 1200,
+        height: 630,
+        alt: socialImageAlt,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title:
-      "Sahota Steel Works | Steel Supply & Fabrication in Ludhiana, Punjab",
-    description: business.summary,
-    images: ["/images/hero.jpg"],
+    title: siteTitle,
+    description: siteDescription,
+    images: [socialImageUrl],
   },
   robots: {
     index: true,
@@ -72,7 +84,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0d1116",
+  themeColor: "#171717",
 };
 
 /** LocalBusiness structured data — only confirmed, factual details. */
@@ -107,10 +119,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${barlow.variable} ${barlowCondensed.variable} h-full antialiased`}
     >
-      <body className="flex min-h-svh flex-col bg-ink-50">
+      <body className="flex min-h-svh flex-col bg-ink-950">
+        {/* Enables the scroll-reveal hidden state only when JS is available,
+            so content is never hidden for no-JS visitors. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js');",
+          }}
+        />
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:inline-flex focus:h-11 focus:items-center focus:bg-accent-500 focus:px-5 focus:text-sm focus:font-semibold focus:uppercase focus:tracking-wide focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:inline-flex focus:h-11 focus:items-center focus:bg-accent-500 focus:px-5 focus:text-sm focus:font-semibold focus:uppercase focus:tracking-wide focus:text-ink-950"
         >
           Skip to main content
         </a>

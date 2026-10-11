@@ -1,35 +1,77 @@
 "use client";
 
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { galleryItems } from "@/data/gallery";
+import {
+  galleryItems,
+  galleryCategories,
+  type GalleryCategory,
+  type GalleryItem,
+} from "@/data/gallery";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import SectionHeading from "@/components/SectionHeading";
+import MetalCut from "@/components/MetalCut";
+
+type Filter = GalleryCategory | "all";
 
 export default function Gallery() {
-  const [openIdx, setOpenIdx] = useState<number | null>(null);
-  const triggerRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const lastTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const [filter, setFilter] = useState<Filter>("all");
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [closing, setClosing] = useState(false);
+
+  const triggerRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const lastTriggerId = useRef<string | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const closeTimer = useRef<number | null>(null);
+  const closingRef = useRef(false);
 
-  const open = openIdx !== null;
+  const open = openId !== null;
 
-  const openImage = (i: number) => {
-    lastTriggerRef.current = triggerRefs.current[i] ?? null;
-    setOpenIdx(i);
+  const filtered = useMemo<GalleryItem[]>(
+    () =>
+      filter === "all"
+        ? galleryItems
+        : galleryItems.filter((item) => item.category === filter),
+    [filter],
+  );
+
+  const openImage = (id: string) => {
+    if (closeTimer.current) {
+      window.clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+    closingRef.current = false;
+    setClosing(false);
+    lastTriggerId.current = id;
+    setOpenId(id);
   };
 
-  const close = () => {
-    setOpenIdx(null);
-    lastTriggerRef.current?.focus();
-  };
+  const close = useCallback(() => {
+    if (closingRef.current) return;
+    closingRef.current = true;
+    setClosing(true);
+    closeTimer.current = window.setTimeout(() => {
+      closeTimer.current = null;
+      closingRef.current = false;
+      setClosing(false);
+      setOpenId(null);
+      const id = lastTriggerId.current;
+      if (id) triggerRefs.current.get(id)?.focus();
+    }, 180);
+  }, []);
 
-  const step = (dir: 1 | -1) => {
-    setOpenIdx((current) => {
-      if (current === null) return current;
-      return (current + dir + galleryItems.length) % galleryItems.length;
-    });
-  };
+  const step = useCallback(
+    (dir: 1 | -1) => {
+      setOpenId((currentId) => {
+        if (currentId === null) return currentId;
+        const index = filtered.findIndex((item) => item.id === currentId);
+        if (index === -1) return currentId;
+        const next = (index + dir + filtered.length) % filtered.length;
+        return filtered[next]?.id ?? currentId;
+      });
+    },
+    [filtered],
+  );
 
   // Keyboard control + scroll lock while the lightbox is open
   useEffect(() => {
@@ -37,8 +79,8 @@ export default function Gallery() {
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
-      if (e.key === "ArrowRight") step(1);
-      if (e.key === "ArrowLeft") step(-1);
+      else if (e.key === "ArrowRight") step(1);
+      else if (e.key === "ArrowLeft") step(-1);
     };
     document.addEventListener("keydown", onKey);
 
@@ -49,34 +91,74 @@ export default function Gallery() {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = previousOverflow;
     };
-  }, [open]);
+  }, [open, close, step]);
 
   // Focus the close button when the lightbox opens
   useEffect(() => {
-    if (open) closeButtonRef.current?.focus();
-  }, [open, openIdx]);
+    if (open && !closingRef.current) closeButtonRef.current?.focus();
+  }, [open, openId]);
 
-  const activeItem = openIdx !== null ? galleryItems[openIdx] : null;
+  // Clean up any pending close timer on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  const activeItem = openId
+    ? (filtered.find((item) => item.id === openId) ?? null)
+    : null;
+  const activeIndex = activeItem
+    ? filtered.findIndex((item) => item.id === activeItem.id)
+    : -1;
 
   return (
-    <section id="gallery" className="bg-ink-950 py-20 sm:py-28">
+    <section id="gallery" className="relative bg-ink-950 py-20 sm:py-28">
+      <MetalCut />
       <div className="container-site">
         <SectionHeading
           eyebrow="Gallery"
           title="Materials & Fabrication in Action"
-          description="A look at the kind of steel materials, sections, and fabrication work we deal with. Representative imagery — your project enquiries are welcome."
+          description="Browse steel materials, fabrication work, and structural examples. Representative photography — your project enquiries are welcome."
           dark
         />
 
-        <div className="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {galleryItems.map((item, i) => (
+        {/* Category filter */}
+        <div
+          role="group"
+          aria-label="Filter gallery by category"
+          className="mt-10 flex flex-wrap gap-2"
+        >
+          {galleryCategories.map((category) => {
+            const active = filter === category.id;
+            return (
+              <button
+                key={category.id}
+                type="button"
+                onClick={() => setFilter(category.id)}
+                aria-pressed={active}
+                className={`inline-flex h-10 items-center border px-4 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                  active
+                    ? "border-accent-500 bg-accent-500 text-ink-950"
+                    : "border-white/20 text-ink-300 hover:border-accent-400 hover:text-accent-300"
+                }`}
+              >
+                {category.label}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {filtered.map((item) => (
             <button
-              key={item.src}
+              key={item.id}
               type="button"
               ref={(el) => {
-                triggerRefs.current[i] = el;
+                if (el) triggerRefs.current.set(item.id, el);
+                else triggerRefs.current.delete(item.id);
               }}
-              onClick={() => openImage(i)}
+              onClick={() => openImage(item.id)}
               aria-label={`View gallery image: ${item.caption}`}
               className="group relative aspect-[4/3] overflow-hidden bg-ink-900 text-left"
             >
@@ -89,7 +171,10 @@ export default function Gallery() {
                 className="object-cover transition-transform duration-500 group-hover:scale-105"
                 fallbackLabel="Gallery image"
               />
-              <span className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" aria-hidden="true" />
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 bg-gradient-to-t from-ink-950/80 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              />
               <span className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-sm font-semibold uppercase tracking-wide text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 {item.caption}
                 <Expand className="h-4 w-4 text-accent-400" aria-hidden="true" />
@@ -99,9 +184,9 @@ export default function Gallery() {
         </div>
 
         <p className="mt-8 text-xs leading-relaxed text-ink-500">
-          Photographs are representative industrial images used until real shop
-          photographs become available — they are not presented as photos of
-          specific Sahota Steel Works projects.
+          Photographs are representative industrial images — none are
+          presented as photographs of specific Sahota Steel Works
+          projects.
         </p>
       </div>
 
@@ -111,7 +196,9 @@ export default function Gallery() {
           role="dialog"
           aria-modal="true"
           aria-label={`Gallery image viewer — ${activeItem.caption}`}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-ink-950/95 p-4 backdrop-blur-sm sm:p-8"
+          className={`fixed inset-0 z-[100] flex items-center justify-center bg-ink-950/95 p-4 backdrop-blur-sm sm:p-8 ${
+            closing ? "anim-lightbox-out pointer-events-none" : "anim-lightbox-in"
+          }`}
           onClick={close}
         >
           <button
@@ -136,10 +223,7 @@ export default function Gallery() {
             <ChevronLeft className="h-6 w-6" aria-hidden="true" />
           </button>
 
-          <figure
-            className="relative max-w-5xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <figure className="relative max-w-5xl" onClick={(e) => e.stopPropagation()}>
             <ImageWithFallback
               src={activeItem.src}
               alt={activeItem.alt}
@@ -154,7 +238,7 @@ export default function Gallery() {
                 {activeItem.caption}
               </span>
               <span className="tabular-nums text-ink-400">
-                {openIdx! + 1} / {galleryItems.length}
+                {activeIndex + 1} / {filtered.length}
               </span>
             </figcaption>
           </figure>

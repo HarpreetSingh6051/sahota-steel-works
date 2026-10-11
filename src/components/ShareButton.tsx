@@ -60,8 +60,8 @@ export default function ShareButton({
 
   const solid = variant === "solid";
   const styles = solid
-    ? "bg-accent-500 text-white hover:bg-accent-600"
-    : "border border-ink-300 bg-white text-ink-800 hover:border-accent-500 hover:text-accent-600";
+    ? "bg-accent-500 text-ink-950 hover:bg-accent-400"
+    : "border border-white/25 bg-white/[0.04] text-white hover:border-accent-500 hover:text-accent-300";
   const canShare = typeof navigator !== "undefined" && !!navigator.share;
 
   return (
