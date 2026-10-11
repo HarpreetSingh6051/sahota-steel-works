@@ -356,6 +356,131 @@
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* Premium depth layer — logo, 3D cards, hero sweep and parallax.      */
+/* All motion is subtle, GPU-friendly and disabled for reduced motion. */
+/* ------------------------------------------------------------------ */
+
+@layer components {
+  /* Logo mark — metallic gradients live in <BrandDefs />; this only adds
+     shadow depth and a faint orange lift, never distorting the geometry. */
+  .logo-mark {
+    filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.14))
+      drop-shadow(0 5px 12px rgba(0, 0, 0, 0.5))
+      drop-shadow(0 0 10px rgba(232, 102, 27, 0.16));
+  }
+
+  /* Soft orange reflection pooling beneath the logo mark */
+  .logo-reflection {
+    position: absolute;
+    left: 50%;
+    bottom: -7px;
+    height: 8px;
+    width: 68%;
+    transform: translateX(-50%);
+    border-radius: 9999px;
+    background: radial-gradient(
+      closest-side,
+      rgba(232, 102, 27, 0.6),
+      rgba(232, 102, 27, 0)
+    );
+    filter: blur(4px);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  /* Subtle embossed depth for headings on dark surfaces */
+  .heading-depth {
+    text-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.05),
+      0 14px 34px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Interactive 3D product card — pointer-following perspective tilt.
+     JS writes --tilt-rx / --tilt-ry / --tilt-lift; the CSS here is inert
+     until those custom properties change. */
+  .tilt-card {
+    transform: perspective(1050px) rotateX(var(--tilt-rx, 0deg))
+      rotateY(var(--tilt-ry, 0deg))
+      translate3d(0, calc(var(--tilt-lift, 0) * -6px), 0);
+    transform-style: preserve-3d;
+    transition:
+      transform 0.18s ease-out,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+
+  .tilt-card:hover {
+    will-change: transform;
+  }
+
+  /* Restrained metallic highlight that tracks the pointer */
+  .tilt-card__glare {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background: radial-gradient(
+      420px circle at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+      rgba(255, 255, 255, 0.14),
+      rgba(255, 122, 47, 0.1) 34%,
+      transparent 62%
+    );
+    mix-blend-mode: screen;
+  }
+
+  .tilt-card:hover .tilt-card__glare,
+  .tilt-card:focus-within .tilt-card__glare {
+    opacity: 1;
+  }
+
+  /* Orange metallic light sweep drifting across the hero */
+  .hero-sweep {
+    position: absolute;
+    inset: -20% -10%;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 42%,
+      rgba(232, 102, 27, 0.14) 47%,
+      rgba(255, 183, 71, 0.22) 50%,
+      rgba(232, 102, 27, 0.14) 53%,
+      transparent 58%
+    );
+    mix-blend-mode: screen;
+    opacity: 0;
+    transform: translate3d(-55%, 0, 0);
+    animation: hero-sweep 11s ease-in-out 2.5s infinite;
+  }
+}
+
+@layer utilities {
+  /* Scroll-parallax layer — JS writes --parallax-y */
+  .hero-parallax {
+    transform: translate3d(0, var(--parallax-y, 0px), 0);
+    will-change: transform;
+  }
+}
+
+@keyframes hero-sweep {
+  0% {
+    transform: translate3d(-55%, 0, 0);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.85;
+  }
+  17% {
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(55%, 0, 0);
+    opacity: 0;
+  }
+}
+
 /* Scroll-reveal system — .reveal (single element) and .reveal-stagger (children).
    Only hidden once JS is present (html.js), so content is never lost. */
 html.js .reveal,
@@ -369,7 +494,7 @@ html.js .reveal-stagger > * {
 
 html.js .reveal.is-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 html.js .reveal-stagger > * {
@@ -378,7 +503,7 @@ html.js .reveal-stagger > * {
 
 html.js .reveal-stagger.is-in > * {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 @keyframes hero-up {
@@ -543,5 +668,20 @@ html.js .reveal-stagger.is-in > * {
 
   .weld-canvas {
     display: none;
+  }
+
+  /* Premium depth effects resolve to their static, visible state */
+  .tilt-card {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .tilt-card__glare,
+  .hero-sweep {
+    display: none !important;
+  }
+
+  .hero-parallax {
+    transform: none !important;
   }
 }

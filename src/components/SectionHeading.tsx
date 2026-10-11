@@ -61,7 +61,7 @@ export default function SectionHeading({
       </p>
       <h2
         className={`font-display text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl ${
-          dark ? "text-white" : "text-ink-950"
+          dark ? "text-white heading-depth" : "text-ink-950"
         }`}
       >
         {title}

@@ -2,6 +2,7 @@ import { MapPin, MessageCircle, Phone } from "lucide-react";
 import { business } from "@/data/business";
 import { genericWhatsAppLink } from "@/lib/contact";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import AmbientEmbers from "@/components/AmbientEmbers";
 import IndustrialBackdrop from "@/components/IndustrialBackdrop";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
@@ -19,6 +20,7 @@ export default function About() {
       className="relative isolate overflow-hidden bg-ink-950 py-20 sm:py-28"
     >
       <IndustrialBackdrop variant="dark" intensity="soft" showProfiles={false} />
+      <AmbientEmbers count={10} />
       <Reveal className="container-site grid items-center gap-12 lg:grid-cols-2 lg:gap-16" stagger>
         {/* Photography */}
         <div className="relative">

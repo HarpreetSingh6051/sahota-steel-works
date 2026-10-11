@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Barlow, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 import { business } from "@/data/business";
+import BrandDefs from "@/components/BrandDefs";
 
 const barlow = Barlow({
   subsets: ["latin"],
@@ -133,6 +134,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to main content
         </a>
+        <BrandDefs />
         {children}
         <script
           type="application/ld+json"

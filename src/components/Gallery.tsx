@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 import {
   galleryItems,
@@ -11,6 +11,7 @@ import {
 import ImageWithFallback from "@/components/ImageWithFallback";
 import SectionHeading from "@/components/SectionHeading";
 import MetalCut from "@/components/MetalCut";
+import Reveal from "@/components/Reveal";
 
 type Filter = GalleryCategory | "all";
 
@@ -149,10 +150,11 @@ export default function Gallery() {
           })}
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {filtered.map((item) => (
+        <Reveal className="mt-8 grid grid-cols-2 gap-4 lg:grid-cols-4" stagger>
+          {filtered.map((item, index) => (
             <button
               key={item.id}
+              style={{ "--reveal-delay": `${index * 40}ms` } as CSSProperties}
               type="button"
               ref={(el) => {
                 if (el) triggerRefs.current.set(item.id, el);
@@ -181,7 +183,7 @@ export default function Gallery() {
               </span>
             </button>
           ))}
-        </div>
+        </Reveal>
 
         <p className="mt-8 text-xs leading-relaxed text-ink-500">
           Photographs are representative industrial images — none are

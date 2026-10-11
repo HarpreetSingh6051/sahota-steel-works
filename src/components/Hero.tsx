@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { business } from "@/data/business";
 import { genericWhatsAppLink } from "@/lib/contact";
-import ImageWithFallback from "@/components/ImageWithFallback";
+import HeroBackground from "@/components/HeroBackground";
 import WeldingEffect from "@/components/WeldingEffect";
 import { LogoMark } from "@/components/Logo";
 
@@ -43,77 +43,7 @@ export default function Hero() {
       id="home"
       className="relative isolate flex min-h-[92svh] items-center overflow-hidden bg-ink-950"
     >
-      {/* Background photograph + atmospheric depth */}
-      <div className="absolute inset-0 -z-10">
-        <ImageWithFallback
-          src="/images/hero.jpg"
-          alt="Steel structural framework and beams at a construction site"
-          fill
-          preload
-          sizes="100vw"
-          quality={80}
-          className="object-cover"
-          style={{ objectPosition: "center 40%" }}
-          fallbackLabel="Steel structure"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-ink-950 via-ink-950/85 to-ink-950/35"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/20 to-ink-950/70"
-          aria-hidden="true"
-        />
-        {/* Blurred industrial light sources — slowly drifting */}
-        <div
-          className="anim-orb-drift absolute -left-24 top-0 h-[60%] w-[55%] rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(232,102,27,0.30) 0%, rgba(232,102,27,0) 70%)",
-            filter: "blur(80px)",
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="anim-orb-drift-2 absolute -right-24 bottom-0 h-[50%] w-[45%] rounded-full"
-          style={{
-            background:
-              "radial-gradient(circle, rgba(255,122,47,0.18) 0%, rgba(255,122,47,0) 70%)",
-            filter: "blur(90px)",
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(ellipse at 30% 45%, transparent 40%, rgba(5,9,13,0.7) 100%)",
-          }}
-          aria-hidden="true"
-        />
-
-        {/* Steel-profile motif */}
-        <svg
-          className="absolute right-0 top-0 hidden h-full w-1/2 lg:block"
-          preserveAspectRatio="xMidYMid slice"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <g
-            fill="none"
-            stroke="#dcdcdc"
-            strokeWidth="1"
-            opacity="0.1"
-          >
-            <path d="M120 90 h150 v16 h-67 v180 h67 v16 h-150 v-16 h67 v-180 h-67 Z" />
-            <path d="M340 220 h130 v14 h-58 v150 h58 v14 h-130 v-14 h58 v-150 h-58 Z" />
-          </g>
-          <g stroke="#e8661b" strokeWidth="1.2" opacity="0.14" fill="none">
-            <line x1="120" y1="330" x2="470" y2="330" />
-            <line x1="470" y1="90" x2="470" y2="398" />
-          </g>
-        </svg>
-      </div>
+      <HeroBackground />
 
       <WeldingEffect />
 
@@ -121,7 +51,10 @@ export default function Hero() {
         <div className="max-w-3xl">
           {/* Brand emblem */}
           <p className="anim-fade-up flex items-center gap-3">
-            <LogoMark className="h-10 w-10 shrink-0" />
+            <span className="relative inline-flex shrink-0">
+              <LogoMark className="logo-mark h-10 w-10" />
+              <span className="logo-reflection" aria-hidden="true" />
+            </span>
             <span className="flex flex-col leading-none">
               <span className="font-display text-lg font-bold uppercase tracking-[0.06em] text-white">
                 Sahota Steel Works

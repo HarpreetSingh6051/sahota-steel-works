@@ -1,6 +1,7 @@
 import { ArrowRight, MessageCircle, Navigation, Phone } from "lucide-react";
 import { business } from "@/data/business";
 import { genericWhatsAppLink } from "@/lib/contact";
+import AmbientEmbers from "@/components/AmbientEmbers";
 import ImageWithFallback from "@/components/ImageWithFallback";
 import Reveal from "@/components/Reveal";
 
@@ -25,6 +26,8 @@ export default function CTASection() {
         <div className="absolute inset-0 bg-ink-950/85" aria-hidden="true" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy-950/70 via-transparent to-ink-950/70" aria-hidden="true" />
       </div>
+
+      <AmbientEmbers count={14} />
 
       <Reveal className="container-site text-center">
         <p className="eyebrow eyebrow-light justify-center">

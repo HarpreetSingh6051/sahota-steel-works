@@ -24,8 +24,9 @@ const iconMap: Record<Service["icon"], LucideIcon> = {
 
 export default function Services() {
   return (
-    <section id="services" className="relative bg-ink-950 py-20 text-white sm:py-28">
+    <section id="services" className="relative overflow-hidden bg-ink-950 py-20 text-white sm:py-28">
       <MetalCut />
+      <span className="divider-sheen" aria-hidden="true" />
       <div className="container-site">
         <SectionHeading
           eyebrow="What We Do"
