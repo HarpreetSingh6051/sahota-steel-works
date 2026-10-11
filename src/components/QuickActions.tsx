@@ -52,13 +52,28 @@ export default function QuickActions() {
       }
     : null;
 
+  const items = emailAction ? [...actions, emailAction] : actions;
+
+  /**
+   * Column count must match the number of cards on screen. It used to be
+   * hard-coded to 5 (4 actions + the old Justdial tile), which left a dead
+   * cell across the bar after Justdial was removed. Classes stay as literal
+   * strings so Tailwind still generates them.
+   */
+  const lgColumns =
+    items.length === 4
+      ? "lg:grid-cols-4"
+      : items.length >= 5
+        ? "lg:grid-cols-5"
+        : "lg:grid-cols-3";
+
   return (
     <section
       aria-label="Quick contact actions"
       className="relative z-10 border-b border-white/10 bg-ink-950"
     >
-      <div className="container-site grid grid-cols-2 gap-px bg-white/10 lg:grid-cols-5">
-        {(emailAction ? [...actions, emailAction] : actions).map((action) => (
+      <div className={`container-site grid grid-cols-2 gap-px bg-white/10 ${lgColumns}`}>
+        {items.map((action) => (
           <a
             key={action.id}
             href={action.href}

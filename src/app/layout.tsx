@@ -33,8 +33,13 @@ const siteDescription =
  * Branded Open Graph / Twitter share image (1200 x 630) — a static asset in
  * public/, referenced with an absolute HTTPS URL so social crawlers can fetch
  * it without authentication.
+ *
+ * The artwork is built from the About Us photograph (public/images/about.jpg)
+ * with the Sahota Steel Works lockup, so the link preview matches the site.
+ * Keep the file name stable — changing it is what forces WhatsApp / Facebook /
+ * LinkedIn to drop an already-cached preview and fetch the new picture.
  */
-const socialImageUrl = `${business.siteUrl}/images/og-cover.jpg`;
+const socialImageUrl = `${business.siteUrl}/images/og-share.jpg`;
 const socialImageAlt =
   "Sahota Steel Works — steel supply and fabrication services in Ludhiana, Punjab, India";
 

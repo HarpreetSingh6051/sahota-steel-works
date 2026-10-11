@@ -77,12 +77,11 @@ The header/footer wordmark also has a one-shot metallic sheen sweep on load.
 Sharing the site on WhatsApp, Facebook, LinkedIn or X renders a branded
 card instead of a bare URL.
 
-- **Share image** - `public/images/og-cover.jpg` (1200 x 630 JPEG). It uses
-  the dark charcoal / graphite surface, the industrial orange accent
-  (`#E8661B`) and off-white type: the SSW mark over "SAHOTA / STEEL WORKS",
-  the line "Steel Supply & Fabrication | Ludhiana, Punjab", and the address,
-  composited over a steel channel-section photograph held back by a charcoal
-  scrim.
+- **Share image** - `public/images/og-share.jpg` (1200 x 630 JPEG). Built
+  from the About Us photograph (`public/images/about.jpg` — the steel
+  framework) with the Sahota Steel Works lockup (SSW mark + "SAHOTA / STEEL
+  WORKS"), the line "Supply & Fabrication · Ludhiana, Punjab" and an orange
+  edge line, composited over a charcoal scrim so the brand stays legible.
 - **Metadata** - all declared once in the `metadata` export in
   `src/app/layout.tsx`: `metadataBase` (from `business.siteUrl`),
   `title` / `description`, `openGraph`
@@ -91,8 +90,10 @@ card instead of a bare URL.
   (`summary_large_image`). The file-based `opengraph-image` convention is
   intentionally not used, so the image has one source of truth.
 - The share image is referenced by **absolute HTTPS URL**
-  (`https://sahota-steel-works.vercel.app/images/og-cover.jpg`), resolved
-  from `business.siteUrl`.
+  (`https://sahota-steel-works.vercel.app/images/og-share.jpg`), resolved
+  from `business.siteUrl`. Its file name changed with the About Us artwork,
+  which is what makes WhatsApp / Facebook / LinkedIn drop an already-cached
+  preview and fetch the new picture.
 
 ## Steel showroom
 
@@ -220,7 +221,7 @@ public/
     hero.jpg          # home hero background (stored locally)
     about.jpg         # "About" section photo (steel framework)
     website-qr.png    # QR code encoded with business.siteUrl
-    og-cover.jpg      # 1200x630 Open Graph / Twitter share image
+    og-share.jpg      # 1200x630 Open Graph / Twitter share image
   brand/              # reusable logo SVGs
 ```
 
