@@ -4,8 +4,8 @@
  * Every phone number, link and displayed contact detail lives here so the
  * site can be updated without touching any component markup.
  *
- * NOTE — replace the placeholder siteUrl with the real production domain
- * after the first Vercel deployment (see README).
+ * NOTE — siteUrl below is the verified production domain. Override it with
+ * NEXT_PUBLIC_SITE_URL when moving to a custom domain (see README).
  */
 
 export interface BusinessContact {
@@ -67,10 +67,13 @@ export const business = {
   email: null as string | null,
 
   /**
-   * PLACEHOLDER domain used to resolve absolute metadata URLs (Open Graph,
-   * canonical base). Replace with the real Vercel/domain URL after deploy.
+   * Verified production domain — resolves every absolute metadata URL
+   * (Open Graph, Twitter, canonical and JSON-LD). Override with the
+   * NEXT_PUBLIC_SITE_URL env var (e.g. a custom domain) without editing
+   * this file.
    */
-  siteUrl: "https://sahotasteelworks.vercel.app",
+  siteUrl:
+    process.env.NEXT_PUBLIC_SITE_URL || "https://sahota-steel-works.vercel.app",
 } as const;
 
 /** Default WhatsApp message used for the generic enquiry button. */

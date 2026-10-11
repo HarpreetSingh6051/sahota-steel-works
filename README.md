@@ -91,8 +91,8 @@ card instead of a bare URL.
   (`summary_large_image`). The file-based `opengraph-image` convention is
   intentionally not used, so the image has one source of truth.
 - The share image is referenced by **absolute HTTPS URL**
-  (`https://<your-domain>/images/og-cover.jpg`), resolved from
-  `business.siteUrl`.
+  (`https://sahota-steel-works.vercel.app/images/og-cover.jpg`), resolved
+  from `business.siteUrl`.
 
 ## Steel showroom
 
@@ -239,20 +239,22 @@ hides all email actions while it is `null`.
 
 ## After your first deploy
 
-1. **Replace the placeholder domain** in `src/data/business.ts` -
-   `siteUrl: "https://YOUR-DOMAIN"`. It currently points at
-   `https://sahotasteelworks.vercel.app` (a guess). This feeds
+1. **Confirm the production domain** in `src/data/business.ts` -
+   `siteUrl` is pre-set to the verified Vercel URL
+   `https://sahota-steel-works.vercel.app` (note the hyphens). It feeds
    `metadataBase`, the Open Graph / Twitter URLs (including the share
-   image), and the JSON-LD `image`/`url`.
+   image), and the JSON-LD `image`/`url`. To switch to a custom domain,
+   set the `NEXT_PUBLIC_SITE_URL` environment variable in Vercel - no code
+   change required.
 2. **Swap stock images for real photos** - `public/images/` and
    `public/images/products/` hold representative industrial stock
    photography (Pexels license). Replace each file in place
    (keep the same filenames) or update the data files. The product
    catalogue and Gallery captions already state the photos are
    representative until real shop photos exist.
-3. **Canonical URL** is intentionally omitted (domain unknown). Once the real
-   domain is set, add `alternates: { canonical: "/" }` in
-   `src/app/layout.tsx` if desired.
+3. **Canonical URL** is intentionally omitted. `metadataBase` is already set
+   from `business.siteUrl`, so add `alternates: { canonical: "/" }` in
+   `src/app/layout.tsx` if a canonical link is desired.
 
 > **Refreshing cached link previews** - social platforms cache previews
 > aggressively. After changing the metadata or share image, force a
@@ -267,7 +269,9 @@ hides all email actions while it is `null`.
 1. Push this repo to GitHub.
 2. In Vercel: **New Project** -> import the repo -> framework preset
    **Next.js** (auto-detected). No environment variables, no overrides.
-3. Deploy. After the first build, set `siteUrl` (step 1 above) and redeploy.
+3. Deploy. `siteUrl` already points at the verified Vercel URL
+   (`https://sahota-steel-works.vercel.app`); set `NEXT_PUBLIC_SITE_URL`
+   only when moving to a custom domain.
 4. `metadataBase` resolves relative OG images - no extra config needed.
 
 ## Verification performed
