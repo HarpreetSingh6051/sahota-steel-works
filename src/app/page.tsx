@@ -9,6 +9,7 @@ import MobileActionBar from "@/components/MobileActionBar";
 import Products from "@/components/Products";
 import QuickActions from "@/components/QuickActions";
 import Services from "@/components/Services";
+import SteelStructure from "@/components/SteelStructure";
 import WhyChooseUs from "@/components/WhyChooseUs";
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
         <QuickActions />
         <About />
         <Products />
+        <SteelStructure />
         <Services />
         <WhyChooseUs />
         <Gallery />

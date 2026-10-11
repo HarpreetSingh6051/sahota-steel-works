@@ -22,10 +22,11 @@ const iconMap: Record<WhyPoint["icon"], LucideIcon> = {
 
 export default function WhyChooseUs() {
   return (
-    <section aria-labelledby="why-us-heading" className="relative overflow-hidden border-y border-white/10 bg-ink-900 py-20 sm:py-28">
+    <section aria-labelledby="why-us-heading" className="relative overflow-hidden border-y border-white/10 bg-ink-900 pt-6 pb-20 sm:pt-8 sm:pb-28">
       <span className="divider-sheen" aria-hidden="true" />
       <div className="container-site">
         <SectionHeading
+          titleId="why-us-heading"
           eyebrow="Why Sahota Steel Works"
           title="Practical reasons to get in touch"
           description="We keep things straightforward: local, direct, and easy to enquire."

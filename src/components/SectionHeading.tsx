@@ -8,6 +8,8 @@ interface SectionHeadingProps {
   description?: string;
   align?: "center" | "left";
   dark?: boolean;
+  /** Optional id for the <h2>, so a <section> can point at it via aria-labelledby. */
+  titleId?: string;
 }
 
 export default function SectionHeading({
@@ -16,6 +18,7 @@ export default function SectionHeading({
   description,
   align = "center",
   dark = false,
+  titleId,
 }: SectionHeadingProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [inView, setInView] = useState(false);
@@ -60,6 +63,7 @@ export default function SectionHeading({
         {align === "center" && <span className="eyebrow-line" aria-hidden="true" />}
       </p>
       <h2
+        id={titleId}
         className={`font-display text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl ${
           dark ? "text-white heading-depth" : "text-ink-950"
         }`}

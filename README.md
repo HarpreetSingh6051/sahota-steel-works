@@ -133,7 +133,7 @@ card instead of a bare URL.
 ## Contact & QR code
 
 The Contact section lists both phone numbers, WhatsApp, directions and the
-Justdial listing. It also renders a **QR code**
+map. It also renders a **QR code**
 (`public/images/website-qr.png`) that encodes `business.siteUrl`, so visitors
 or printed materials can scan to open the site. The PNG is generated locally
 and stored in `public/` (no external service at runtime). Re-generate it if
@@ -198,21 +198,25 @@ src/
     IndustrialBackdrop.tsx # reusable industrial background system
     WeldingEffect.tsx # hero welding glow + sparks (canvas)
     MetalCut.tsx      # metal-cutting section divider
+    SteelStructure.tsx # "From Raw Steel to Structure" section
+    SteelAssemblyAnimation.tsx # scroll-driven SVG frame assembly
+    CuttingLine.tsx   # thin orange section reveal line
+    BlueprintReveal.tsx # blueprint linework that becomes the real photo
     Header.tsx Hero.tsx QuickActions.tsx About.tsx Products.tsx
     Services.tsx WhyChooseUs.tsx
     Gallery.tsx Contact.tsx CTASection.tsx
     Footer.tsx MobileActionBar.tsx ShareButton.tsx CopyrightYear.tsx
     ImageWithFallback.tsx
   data/               # ALL business content lives here
-    business.ts       # name, phones, WhatsApp, Maps, Justdial, email
-    products.ts       # 13 products (image, profile, category)
+    business.ts       # name, phones, WhatsApp, Maps, email
+    products.ts       # 12 products (image, profile, category)
     services.ts       # 5 services + "why us" points
     gallery.ts        # categorised gallery items (materials/fabrication/structural)
   lib/
     contact.ts        # WhatsApp deep-link helpers
 public/
   images/             # local images (representative industrial stock)
-    products/         # product catalogue photography (13 local JPEGs)
+    products/         # product catalogue photography (12 local JPEGs)
     hero.jpg          # home hero background (stored locally)
     about.jpg         # "About" section photo (steel framework)
     website-qr.png    # QR code encoded with business.siteUrl
@@ -226,8 +230,8 @@ Every phone number, link, and displayed detail is centralized in
 `src/data/*`. All copy reads from these files, so edit data rather than
 markup.
 
-- **Phones / WhatsApp / Maps / Justdial / email** - `src/data/business.ts`
-- **Products** - `src/data/products.ts` (13 items with `image`,
+- **Phones / WhatsApp / Maps / email** - `src/data/business.ts`
+- **Products** - `src/data/products.ts` (12 items with `image`,
   `imageAlt`, `profile`, `category`). Photos live in
   `public/images/products/`.
 - **Services & "why us" points** - `src/data/services.ts`
@@ -282,8 +286,8 @@ hides all email actions while it is `null`.
 - Live checks on the production build (`npm run start`):
   - Single `h1`, correct heading hierarchy, skip-to-content link
   - All section anchors resolve; fixed mobile action bar present below `lg`
-  - All `tel:` links correct (both numbers); 23 `wa.me` links all correctly
-    URL-encoded; Google Maps directions and Justdial hrefs intact
+  - All `tel:` links correct (both numbers); `wa.me` links all correctly
+    URL-encoded; Google Maps directions and search links intact
   - 28/28 local images return HTTP 200 (`image/jpeg` / `image/png`, incl.
     the QR code); `/icon.svg`,
     `/brand/ssw-mark.svg`, `/brand/ssw-logo.svg` return 200 `image/svg+xml`
@@ -298,5 +302,14 @@ hides all email actions while it is `null`.
     elements compute to `opacity: 1` without the `js` class)
   - Reduced-motion rules present (reveal forced visible, welding canvas
     `display:none`, metal-cut hidden)
+  - Anchor links land with the section heading ~2rem below the sticky
+    header (`html { scroll-padding-top: var(--header-h) }` plus a small
+    section top padding) - measured on Products / Services / Gallery /
+    Contact at mobile and desktop widths
+  - "From Raw Steel to Structure" assembly: the sticky panel pins directly
+    under the header and the SVG members reveal linearly with scroll
+    (`--p` 0 → 1); fully assembled without JS and under reduced motion
+  - Contact map iframe fills its column (no blank band after the Justdial
+    removal); no horizontal overflow at 390 / 768 / 1024 / 1440 px
   - LocalBusiness JSON-LD valid - both phones + contact points, no invented
     email/data

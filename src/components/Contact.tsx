@@ -12,7 +12,7 @@ import SectionHeading from "@/components/SectionHeading";
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative isolate overflow-hidden bg-ink-950 py-20 sm:py-28">
+    <section id="contact" className="relative isolate overflow-hidden bg-ink-950 pt-6 pb-20 sm:pt-8 sm:pb-28">
       <div className="container-site">
         <SectionHeading
           eyebrow="Contact Us"
@@ -21,9 +21,9 @@ export default function Contact() {
           dark
         />
 
-        <div className="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-14">
-          {/* Contact options */}
-          <div>
+        <div className="mt-12 grid gap-10 lg:grid-cols-2 lg:gap-14">
+          {/* Contact options — a balanced 2 x 2 grid of the real actions */}
+          <div className="flex flex-col gap-5">
             <div className="grid gap-5 sm:grid-cols-2">
               {business.contacts.map((contact) => (
                 <div key={contact.name} className="border border-white/10 bg-white/[0.03] p-5">
@@ -65,8 +65,9 @@ export default function Contact() {
                 <p className="text-xs font-semibold uppercase tracking-widest text-accent-400">
                   Visit Us
                 </p>
-                <p className="mt-2 text-sm leading-relaxed text-ink-300">
-                  {business.address}
+                <p className="mt-2 flex items-start gap-2 text-sm leading-relaxed text-ink-300">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent-400" aria-hidden="true" />
+                  <span>{business.address}</span>
                 </p>
                 <a
                   href={business.mapsDirectionsUrl}
@@ -83,7 +84,7 @@ export default function Contact() {
             {business.email && (
               <a
                 href={`mailto:${business.email}`}
-                className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-ink-200 hover:text-accent-300"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-ink-200 hover:text-accent-300"
               >
                 <Mail className="h-4 w-4" aria-hidden="true" />
                 {business.email}
@@ -91,7 +92,7 @@ export default function Contact() {
             )}
 
             {/* Scan-to-open QR — handy for printed materials and sharing */}
-            <div className="mt-5 flex flex-col gap-5 border border-white/10 bg-white/[0.03] p-5 sm:flex-row sm:items-center">
+            <div className="flex flex-col gap-5 border border-white/10 bg-white/[0.03] p-5 sm:flex-row sm:items-center">
               <div className="relative h-32 w-32 shrink-0 bg-white p-2">
                 <ImageWithFallback
                   src="/images/website-qr.png"
@@ -116,23 +117,15 @@ export default function Contact() {
                 </p>
               </div>
             </div>
-
-            <div className="mt-6 flex items-start gap-3 border-l-4 border-accent-500 bg-white/[0.04] p-4">
-              <MapPin className="mt-0.5 h-5 w-5 shrink-0 text-accent-400" aria-hidden="true" />
-              <p className="text-sm leading-relaxed text-ink-300">
-                <strong className="text-white">{business.name}</strong> —{" "}
-                {business.address}
-              </p>
-            </div>
           </div>
 
-          {/* Map preview */}
+          {/* Map preview — the iframe fills the column so no blank band shows */}
           <div className="flex flex-col">
-            <div className="relative flex-1 overflow-hidden border border-white/10 bg-ink-900">
+            <div className="relative min-h-[20rem] flex-1 overflow-hidden border border-white/10 bg-ink-900">
               <iframe
                 title="Map — Sahota Steel Works, Near Khanna Dyeing, Tajpur Road, Ludhiana"
                 src={business.mapsEmbedUrl}
-                className="min-h-[24rem] w-full flex-1"
+                className="absolute inset-0 h-full w-full"
                 loading="lazy"
                 allowFullScreen
                 referrerPolicy="no-referrer-when-downgrade"

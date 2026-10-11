@@ -1,8 +1,8 @@
 import { MapPin, MessageCircle, Phone } from "lucide-react";
 import { business } from "@/data/business";
 import { genericWhatsAppLink } from "@/lib/contact";
-import ImageWithFallback from "@/components/ImageWithFallback";
 import AmbientEmbers from "@/components/AmbientEmbers";
+import BlueprintReveal from "@/components/BlueprintReveal";
 import IndustrialBackdrop from "@/components/IndustrialBackdrop";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
@@ -17,7 +17,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative isolate overflow-hidden bg-ink-950 py-20 sm:py-28"
+      className="relative isolate overflow-hidden bg-ink-950 pt-6 pb-20 sm:pt-8 sm:pb-28"
     >
       <IndustrialBackdrop variant="dark" intensity="soft" showProfiles={false} />
       <AmbientEmbers count={10} />
@@ -25,13 +25,11 @@ export default function About() {
         {/* Photography */}
         <div className="relative">
           <div className="absolute -left-3 -top-3 h-24 w-24 border-l-4 border-t-4 border-accent-500" aria-hidden="true" />
-          <div className="relative aspect-[4/3] overflow-hidden bg-ink-900">
-            <ImageWithFallback
+          <div className="relative aspect-[4/3] overflow-hidden bg-ink-900 sm:aspect-[16/10] lg:aspect-[4/3]">
+            <BlueprintReveal
               src="/images/about.jpg"
               alt="Inside view of a steel structure showing beams and framework"
-              fill
               sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
               fallbackLabel="Steel structure"
             />
           </div>

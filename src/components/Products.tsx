@@ -1,6 +1,7 @@
 import { business } from "@/data/business";
 import { products } from "@/data/products";
 import AmbientEmbers from "@/components/AmbientEmbers";
+import CuttingLine from "@/components/CuttingLine";
 import IndustrialBackdrop from "@/components/IndustrialBackdrop";
 import ProductCard from "@/components/ProductCard";
 import SectionHeading from "@/components/SectionHeading";
@@ -12,7 +13,7 @@ export default function Products() {
   return (
     <section
       id="products"
-      className="relative isolate overflow-hidden bg-ink-950 py-20 text-white sm:py-28"
+      className="relative isolate overflow-hidden bg-ink-950 pt-6 pb-20 text-white sm:pt-8 sm:pb-28"
     >
       <IndustrialBackdrop variant="dark" intensity="full" />
       <AmbientEmbers count={14} />
@@ -27,6 +28,9 @@ export default function Products() {
           align="left"
           dark
         />
+        <div className="mt-8 max-w-sm">
+          <CuttingLine />
+        </div>
 
         {/* Uniform showroom grid — every card shares the same height,
             image-container size and bottom-aligned actions. */}
